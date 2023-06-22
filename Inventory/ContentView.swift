@@ -13,6 +13,7 @@ struct ContentView: View {
     // Firestore query for fetching inventory items
     @FirestoreQuery(collectionPath: "inventories",
                     predicates: [.order(by: SortType.createdAt.rawValue, descending: true)])
+    
     private var items: [InventoryItem]
     
     // View model for managing inventory list
@@ -30,6 +31,7 @@ struct ContentView: View {
                 List {
                     sortBySectionView
                     listItemsSectionView
+                    locationView
                 }
                 .listStyle(.insetGrouped)
             }
@@ -89,8 +91,17 @@ struct ContentView: View {
         }
     }
     
+    // View for displaying the differnt wearhouse locations
+    private var locationView: some View{
+        Section(header: Text("Locations")) {
+         
+        }
+    }
+    
+    
+    
     // Method called when the sort type or sort order changes
-    private func onSortTypeChanged() {
+    private func onSortTypeChanged() {     
         $items.predicates = vm.predicates
     }
       

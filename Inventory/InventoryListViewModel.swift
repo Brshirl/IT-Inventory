@@ -28,7 +28,7 @@ class InventoryListViewModel: ObservableObject {
     
     // Adds a new item to the inventory
     func addItem() {
-        let item = InventoryItem(name: "New Item", quantity: 1)
+        let item = InventoryItem(name: "New Item", quantity: 1, createdBy: "Name")
         _ = try? db.addDocument(from: item)
     }
     
