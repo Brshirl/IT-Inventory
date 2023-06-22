@@ -27,11 +27,12 @@ struct ContentView: View {
             }
             
             // Display the list of items if there are items available
+            locationView
+            
             if items.count > 0 {
                 List {
                     sortBySectionView
                     listItemsSectionView
-                    locationView
                 }
                 .listStyle(.insetGrouped)
             }
@@ -76,6 +77,18 @@ struct ContentView: View {
         }
     }
     
+    // View for displaying the differnt wearhouse locations
+    private var locationView: some View{
+        Section(header: Text("Locations")) {
+            ForEach(items){
+                item in VStack{
+                    Text("Warehouse")
+                }
+            }
+        }
+    }
+    
+    
     // View for displaying the sort by section
     private var sortBySectionView: some View {
         Section {
@@ -90,15 +103,6 @@ struct ContentView: View {
             }
         }
     }
-    
-    // View for displaying the differnt wearhouse locations
-    private var locationView: some View{
-        Section(header: Text("Locations")) {
-         
-        }
-    }
-    
-    
     
     // Method called when the sort type or sort order changes
     private func onSortTypeChanged() {     
