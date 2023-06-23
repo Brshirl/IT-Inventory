@@ -61,6 +61,7 @@ struct InventoryItemsView: View {
             } else {
                 List(items) { item in
                     // Display item details
+                    sortBySectionView
                     VStack {
                         TextField("Name", text: Binding<String>(
                             get: { item.name },
@@ -107,6 +108,24 @@ struct InventoryItemsView: View {
             }
         }
     }
+    
+    // View for displaying the sort by section
+    private var sortBySectionView: some View {
+        Section {
+            DisclosureGroup("Sort by") {
+                Picker("Sort by", selection: $vm.selectedSortType) {
+                    ForEach(SortType.allCases, id: \.rawValue) { sortType in
+                        Text(sortType.text).tag(sortType)
+                    }
+                }.pickerStyle(.segmented)
+                
+                Toggle("Is Descending", isOn: $vm.isDescending)
+            }
+        }
+    }
+    
+    // Method called when the sort type or sort order changes
+
 }
 
 
