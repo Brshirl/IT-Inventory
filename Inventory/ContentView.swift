@@ -1,114 +1,90 @@
-//  ContentView.swift
-//  Inventory
-//
-//  Created by Brett Shirley on 6/21/23.
-//
-
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
 
 struct ContentView: View {
-    
-    // Firestore query for fetching inventory items
-    @FirestoreQuery(collectionPath: "inventories",
-                    predicates: [.order(by: SortType.createdAt.rawValue, descending: true)])
-    
-    private var items: [InventoryItem]
-    
-    // View model for managing inventory list
+
     @StateObject private var vm = InventoryListViewModel()
-    
+    @State private var warehouses: [String] = []
+
     var body: some View {
         VStack {
-            // Display error message if there's an error fetching items
-            if let error = $items.error {
-                Text(error.localizedDescription)
-            }
-            
-            // Display the list of items if there are items available
-            locationView
-            
-            if items.count > 0 {
-                List {
-                    sortBySectionView
-                    listItemsSectionView
-                }
-                .listStyle(.insetGrouped)
-            }
-        }
-        .toolbar {
-            // Add button for adding new items to the inventory
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("+") { vm.addItem() }.font(.title)
-            }
-            
-            // Edit button for editing items in the inventory
-            ToolbarItem(placement: .navigationBarLeading) { EditButton() }
-        }
-        .onChange(of: vm.selectedSortType) { _ in onSortTypeChanged() }
-        .onChange(of: vm.isDescending) { _ in onSortTypeChanged() }
-        .navigationTitle("Inventory")
-    }
-    
-    // View for displaying the list of inventory items
-    private var listItemsSectionView: some View {
-        Section {
-            ForEach(items) { item in
-                VStack {
-                    // Text field for editing the name of the item
-                    TextField("Name", text: Binding<String>(
-                        get: { item.name },
-                        set: { vm.editedName = $0 }),
-                              onEditingChanged: { vm.onEditingItemNameChanged(item: item, isEditing: $0)}
-                    )
-                    .disableAutocorrection(true)
-                    .font(.headline)
-                    
-                    // Stepper for adjusting the quantity of the item
-                    Stepper("Quantity: \(item.quantity)",
-                            value: Binding<Int>(
-                                get: { item.quantity },
-                                set: { vm.updateItem(item, data: ["quantity": $0]) }),
-                            in: 0...1000)
-                }
-            }
-            .onDelete { vm.onDelete(items: items, indexset: $0) }
-        }
-    }
-    
-    // View for displaying the differnt wearhouse locations
-    private var locationView: some View{
-        Section(header: Text("Locations")) {
-            ForEach(items){
-                item in VStack{
-                    Text("Warehouse")
-                }
-            }
-        }
-    }
-    
-    
-    // View for displaying the sort by section
-    private var sortBySectionView: some View {
-        Section {
-            DisclosureGroup("Sort by") {
-                Picker("Sort by", selection: $vm.selectedSortType) {
-                    ForEach(SortType.allCases, id: \.rawValue) { sortType in
-                        Text(sortType.text).tag(sortType)
+            if warehouses.isEmpty {
+                Text("No warehouses found.")
+            } else {
+                List(warehouses, id: \.self) { warehouse in
+                    NavigationLink(destination: InventoryItemsView(warehouse: warehouse)) {
+                        Text(warehouse)
                     }
-                }.pickerStyle(.segmented)
-                
-                Toggle("Is Descending", isOn: $vm.isDescending)
+                }
+            }
+        }
+        .onAppear {
+            fetchWarehouses()
+        }
+    }
+
+    private func fetchWarehouses() {
+        let db = Firestore.firestore()
+        let warehousesRef = db.collection("inventories")
+
+        warehousesRef.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching warehouses: \(error.localizedDescription)")
+                return
+            }
+
+            guard let documents = snapshot?.documents else {
+                print("No warehouses found.")
+                return
+            }
+
+            warehouses = documents.compactMap { $0.documentID }
+        }
+    }
+}
+
+struct InventoryItemsView: View {
+    let warehouse: String
+    @State private var items: [InventoryItem] = []
+
+    var body: some View {
+        VStack {
+            if items.isEmpty {
+                Text("No items found in \(warehouse).")
+            } else {
+                List(items) { item in
+                    // Display item details
+                }
+            }
+        }
+        .onAppear {
+            fetchInventoryItems()
+        }
+    }
+
+    private func fetchInventoryItems() {
+        let db = Firestore.firestore()
+        let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
+
+        inventoryItemsRef.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching inventory items for \(warehouse): \(error.localizedDescription)")
+                return
+            }
+
+            guard let documents = snapshot?.documents else {
+                print("No items found in \(warehouse).")
+                return
+            }
+
+            do {
+                items = try documents.compactMap { try $0.data(as: InventoryItem.self) }
+            } catch {
+                print("Error decoding inventory items: \(error.localizedDescription)")
             }
         }
     }
-    
-    // Method called when the sort type or sort order changes
-    private func onSortTypeChanged() {     
-        $items.predicates = vm.predicates
-    }
-      
 }
 
 struct ContentView_Previews: PreviewProvider {
