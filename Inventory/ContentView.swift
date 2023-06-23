@@ -62,22 +62,9 @@ struct InventoryItemsView: View {
                 List(items) { item in
                     // Display item details
                     sortBySectionView
-                    VStack {
-                        TextField("Name", text: Binding<String>(
-                            get: { item.name },
-                            set: { vm.editedName = $0 }),
-                                  onEditingChanged: { vm.onEditingItemNameChanged(item: item, isEditing: $0)}
-                        )
-                        .disableAutocorrection(true)
-                        .font(.headline)
-                        
-                        Stepper("Quantity: \(item.quantity)",
-                                value: Binding<Int>(
-                                    get: { item.quantity },
-                                    set: { vm.updateItem(item, data: ["quantity": $0]) }),
-                                in: 0...1000)
-                    }
+                    listItemsSectionView
                 }
+                .listStyle(.insetGrouped)
             }
         }
         .onAppear {
@@ -124,10 +111,30 @@ struct InventoryItemsView: View {
         }
     }
     
-    // Method called when the sort type or sort order changes
-
+    // View for displaying the list of inventory items
+    private var listItemsSectionView: some View {
+        Section {
+            ForEach(items) { item in
+                VStack {
+                    TextField("Name", text: Binding<String>(
+                        get: { item.name },
+                        set: { vm.editedName = $0 }),
+                              onEditingChanged: { vm.onEditingItemNameChanged(item: item, isEditing: $0)}
+                    )
+                    .disableAutocorrection(true)
+                    .font(.headline)
+                    
+                    Stepper("Quantity: \(item.quantity)",
+                            value: Binding<Int>(
+                                get: { item.quantity },
+                                set: { vm.updateItem(item, data: ["quantity": $0]) }),
+                            in: 0...1000)
+                }
+            }
+            .onDelete { vm.onDelete(items: items, indexset: $0) }
+        }
+    }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
