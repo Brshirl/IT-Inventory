@@ -59,10 +59,9 @@ struct InventoryItemsView: View {
             if items.isEmpty {
                 Text("No items found in \(warehouse).")
             } else {
-                List(items) { item in
-                    // Display item details
-                    sortBySectionView
-                    listItemsSectionView
+                List {
+                    sortBySectionView // Move the sortBySectionView outside of the List
+                    listItemsSectionView // Move the listItemsSectionView outside of the List
                 }
                 .listStyle(.insetGrouped)
             }

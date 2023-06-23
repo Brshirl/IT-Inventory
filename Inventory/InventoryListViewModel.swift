@@ -27,10 +27,21 @@ class InventoryListViewModel: ObservableObject {
     // MARK: - Item Manipulation Methods
     
     // Adds a new item to the inventory
-    func addItem() {
+    func addItem(warehouse: String) {
         let item = InventoryItem(name: "New Item", quantity: 1, createdBy: "Name")
-        _ = try? db.addDocument(from: item)
+        
+        let db = Firestore.firestore()
+        let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
+        
+        _ = try? inventoryItemsRef.addDocument(from: item, completion: { error in
+            if let error = error {
+                print("Error adding item: \(error.localizedDescription)")
+            } else {
+                print("Item added successfully.")
+            }
+        })
     }
+
     
     // Updates an existing item in the inventory
     func updateItem(_ item: InventoryItem, data: [String: Any]) {
