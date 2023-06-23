@@ -3,8 +3,6 @@ import FirebaseFirestoreSwift
 import SwiftUI
 
 struct ContentView: View {
-
-    @StateObject private var vm = InventoryListViewModel()
     @State private var warehouses: [String] = []
 
     var body: some View {
@@ -22,6 +20,7 @@ struct ContentView: View {
         .onAppear {
             fetchWarehouses()
         }
+        .navigationTitle("Locations")
     }
 
     private func fetchWarehouses() {
@@ -45,8 +44,15 @@ struct ContentView: View {
 }
 
 struct InventoryItemsView: View {
+    @StateObject private var vm: InventoryListViewModel // Use separate view model instances for each warehouse
+
     let warehouse: String
     @State private var items: [InventoryItem] = []
+
+    init(warehouse: String) {
+        self.warehouse = warehouse
+        _vm = StateObject(wrappedValue: InventoryListViewModel()) // Create a new instance of the view model
+    }
 
     var body: some View {
         VStack {
@@ -55,12 +61,28 @@ struct InventoryItemsView: View {
             } else {
                 List(items) { item in
                     // Display item details
+                    VStack {
+                        TextField("Name", text: Binding<String>(
+                            get: { item.name },
+                            set: { vm.editedName = $0 }),
+                                  onEditingChanged: { vm.onEditingItemNameChanged(item: item, isEditing: $0)}
+                        )
+                        .disableAutocorrection(true)
+                        .font(.headline)
+                        
+                        Stepper("Quantity: \(item.quantity)",
+                                value: Binding<Int>(
+                                    get: { item.quantity },
+                                    set: { vm.updateItem(item, data: ["quantity": $0]) }),
+                                in: 0...1000)
+                    }
                 }
             }
         }
         .onAppear {
             fetchInventoryItems()
         }
+        .navigationTitle("Inventory")
     }
 
     private func fetchInventoryItems() {
@@ -86,6 +108,7 @@ struct InventoryItemsView: View {
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
