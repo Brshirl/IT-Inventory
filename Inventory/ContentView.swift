@@ -1,6 +1,7 @@
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import SwiftUI
+/*
+ Brett Shirley
+ 6/26/23
+ */
 
 import FirebaseFirestore
 import FirebaseFirestoreSwift
@@ -114,8 +115,6 @@ struct ListItemsSectionView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+
+
+

@@ -85,9 +85,9 @@
 				8CAC787C2A44C867002BEAED /* LocationItem.swift */,
 				8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */,
 				8C8778202A4352CA005381E0 /* Sort.swift */,
+				8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */,
 				8C8778082A434FC0005381E0 /* Assets.xcassets */,
 				8C87780A2A434FC0005381E0 /* Preview Content */,
-				8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";

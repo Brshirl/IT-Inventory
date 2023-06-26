@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+
 class WarehouseListViewModel: ObservableObject {
     @Published var warehouses: [String] = []
 
