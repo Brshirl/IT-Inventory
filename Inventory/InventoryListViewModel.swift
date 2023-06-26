@@ -1,4 +1,3 @@
-
 //  InventoryListViewModel.swift
 //  Inventory
 //
@@ -24,6 +23,7 @@ class InventoryListViewModel: ObservableObject {
         self.warehouse = warehouse
     }
 
+    // Fetches the inventory items for the selected warehouse
     func fetchInventoryItems() {
         let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
 
@@ -38,6 +38,7 @@ class InventoryListViewModel: ObservableObject {
             }
 
             do {
+                // Decodes the retrieved documents into InventoryItem objects
                 self.items = try snapshot.documents.compactMap { try $0.data(as: InventoryItem.self) }
             } catch {
                 print("Error decoding inventory items: \(error.localizedDescription)")
@@ -45,6 +46,7 @@ class InventoryListViewModel: ObservableObject {
         }
     }
 
+    // Adds a new item to the inventory
     func addItem() {
         let newItem = InventoryItem(name: "New Item", quantity: 1, createdBy: "Name")
         do {
@@ -55,6 +57,7 @@ class InventoryListViewModel: ObservableObject {
         }
     }
 
+    // Updates the name of an item
     func onEditingItemNameChanged(item: InventoryItem) {
         guard item.name != editedName else {
             return
@@ -65,6 +68,7 @@ class InventoryListViewModel: ObservableObject {
             return
         }
 
+        // Updates the item's name in Firestore
         db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
@@ -72,6 +76,7 @@ class InventoryListViewModel: ObservableObject {
         }
     }
 
+    // Handles changes to the quantity of an item
     func onEditingQuantityChanged(item: InventoryItem, isEditing: Bool) {
         guard isEditing else {
             let updatedData = ["quantity": editedQuantity]
@@ -79,6 +84,7 @@ class InventoryListViewModel: ObservableObject {
                 return
             }
 
+            // Updates the item's quantity in Firestore
             db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
                 if let error = error {
                     print("Error updating item: \(error.localizedDescription)")
@@ -90,6 +96,7 @@ class InventoryListViewModel: ObservableObject {
         editedQuantity = item.quantity
     }
 
+    // Deletes an item from the inventory
     func onDelete(indexSet: IndexSet) {
         guard let index = indexSet.first, items.indices.contains(index) else {
             return
@@ -100,6 +107,7 @@ class InventoryListViewModel: ObservableObject {
             return
         }
 
+        // Deletes the item from Firestore
         db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).delete() { error in
             if let error = error {
                 print("Error deleting item: \(error.localizedDescription)")

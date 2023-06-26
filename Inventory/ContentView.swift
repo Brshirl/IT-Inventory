@@ -1,12 +1,13 @@
 /*
- Brett Shirley
- 6/26/23
- */
+Brett Shirley
+6/26/23
+*/
 
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
 
+// View for displaying the list of warehouses
 struct ContentView: View {
     @StateObject private var viewModel = WarehouseListViewModel()
 
@@ -16,6 +17,7 @@ struct ContentView: View {
                 Text("No warehouses found.")
             } else {
                 List(viewModel.warehouses, id: \.self) { warehouse in
+                    // Navigate to the inventory items view when a warehouse is selected
                     NavigationLink(destination: InventoryItemsView(warehouse: warehouse)) {
                         Text(warehouse)
                     }
@@ -29,6 +31,7 @@ struct ContentView: View {
     }
 }
 
+// View for displaying the inventory items of a specific warehouse
 struct InventoryItemsView: View {
     @StateObject private var viewModel: InventoryListViewModel
 
@@ -59,6 +62,7 @@ struct InventoryItemsView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     viewModel.addItem()
+                    viewModel.fetchInventoryItems()
                 }) {
                     Image(systemName: "plus")
                 }
@@ -67,12 +71,14 @@ struct InventoryItemsView: View {
     }
 }
 
+// View for the sort by section in the inventory items view
 struct SortBySectionView: View {
     @ObservedObject var viewModel: InventoryListViewModel
 
     var body: some View {
         Section {
             DisclosureGroup("Sort by") {
+                // Picker for selecting the sort type
                 Picker("Sort by", selection: $viewModel.selectedSortType) {
                     ForEach(SortType.allCases, id: \.rawValue) { sortType in
                         Text(sortType.text).tag(sortType)
@@ -80,12 +86,14 @@ struct SortBySectionView: View {
                 }
                 .pickerStyle(.segmented)
                 
+                // Toggle for selecting the sort order (ascending or descending)
                 Toggle("Is Descending", isOn: $viewModel.isDescending)
             }
         }
     }
 }
 
+// View for displaying the list of inventory items
 struct ListItemsSectionView: View {
     @ObservedObject var viewModel: InventoryListViewModel
 
@@ -93,6 +101,7 @@ struct ListItemsSectionView: View {
         Section {
             ForEach(viewModel.items) { item in
                 VStack {
+                    // Text field for editing the item name
                     TextField("Name", text: $viewModel.editedName)
                         .disableAutocorrection(true)
                         .font(.headline)
@@ -103,6 +112,7 @@ struct ListItemsSectionView: View {
                             viewModel.onEditingItemNameChanged(item: item)
                         }
                     
+                    // Stepper for editing the item quantity
                     Stepper("Quantity: \(item.quantity)", value: $viewModel.editedQuantity, in: 0...1000) { isEditing in
                         viewModel.onEditingQuantityChanged(item: item, isEditing: isEditing)
                     }
@@ -115,6 +125,8 @@ struct ListItemsSectionView: View {
     }
 }
 
-
-
-
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}

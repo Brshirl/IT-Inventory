@@ -21,8 +21,6 @@
 		8C8778232A4352E9005381E0 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778222A4352E9005381E0 /* InventoryItem.swift */; };
 		8C8778252A43530E005381E0 /* InventoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778242A43530E005381E0 /* InventoryListViewModel.swift */; };
 		8C8778292A4353EB005381E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C8778282A4353EB005381E0 /* GoogleService-Info.plist */; };
-		8CAC787D2A44C867002BEAED /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC787C2A44C867002BEAED /* LocationItem.swift */; };
-		8CAC787F2A44C8AC002BEAED /* LocationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,8 +35,6 @@
 		8C8778222A4352E9005381E0 /* InventoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItem.swift; sourceTree = "<group>"; };
 		8C8778242A43530E005381E0 /* InventoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryListViewModel.swift; sourceTree = "<group>"; };
 		8C8778282A4353EB005381E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8CAC787C2A44C867002BEAED /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
-		8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +78,6 @@
 				8C8778062A434FC0005381E0 /* ContentView.swift */,
 				8C8778242A43530E005381E0 /* InventoryListViewModel.swift */,
 				8C8778222A4352E9005381E0 /* InventoryItem.swift */,
-				8CAC787C2A44C867002BEAED /* LocationItem.swift */,
-				8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */,
 				8C8778202A4352CA005381E0 /* Sort.swift */,
 				8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */,
 				8C8778082A434FC0005381E0 /* Assets.xcassets */,
@@ -185,9 +179,7 @@
 				8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */,
 				8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */,
 				8C8778212A4352CA005381E0 /* Sort.swift in Sources */,
-				8CAC787D2A44C867002BEAED /* LocationItem.swift in Sources */,
 				8C8778232A4352E9005381E0 /* InventoryItem.swift in Sources */,
-				8CAC787F2A44C8AC002BEAED /* LocationListViewModel.swift in Sources */,
 				8C8778252A43530E005381E0 /* InventoryListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
