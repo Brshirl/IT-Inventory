@@ -2,15 +2,19 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
 
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+import SwiftUI
+
 struct ContentView: View {
-    @State private var warehouses: [String] = []
+    @StateObject private var viewModel = WarehouseListViewModel()
 
     var body: some View {
         VStack {
-            if warehouses.isEmpty {
+            if viewModel.warehouses.isEmpty {
                 Text("No warehouses found.")
             } else {
-                List(warehouses, id: \.self) { warehouse in
+                List(viewModel.warehouses, id: \.self) { warehouse in
                     NavigationLink(destination: InventoryItemsView(warehouse: warehouse)) {
                         Text(warehouse)
                     }
@@ -18,119 +22,94 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            fetchWarehouses()
+            viewModel.fetchWarehouses()
         }
         .navigationTitle("Locations")
-    }
-
-    private func fetchWarehouses() {
-        let db = Firestore.firestore()
-        let warehousesRef = db.collection("inventories")
-
-        warehousesRef.getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error fetching warehouses: \(error.localizedDescription)")
-                return
-            }
-
-            guard let documents = snapshot?.documents else {
-                print("No warehouses found.")
-                return
-            }
-
-            warehouses = documents.compactMap { $0.documentID }
-        }
     }
 }
 
 struct InventoryItemsView: View {
-    @StateObject private var vm: InventoryListViewModel // Use separate view model instances for each warehouse
+    @StateObject private var viewModel: InventoryListViewModel
 
     let warehouse: String
-    @State private var items: [InventoryItem] = []
 
     init(warehouse: String) {
         self.warehouse = warehouse
-        _vm = StateObject(wrappedValue: InventoryListViewModel()) // Create a new instance of the view model
+        _viewModel = StateObject(wrappedValue: InventoryListViewModel(warehouse: warehouse))
     }
 
     var body: some View {
         VStack {
-            if items.isEmpty {
+            if viewModel.items.isEmpty {
                 Text("No items found in \(warehouse).")
             } else {
                 List {
-                    sortBySectionView // Move the sortBySectionView outside of the List
-                    listItemsSectionView // Move the listItemsSectionView outside of the List
+                    SortBySectionView(viewModel: viewModel)
+                    ListItemsSectionView(viewModel: viewModel)
                 }
                 .listStyle(.insetGrouped)
             }
         }
         .onAppear {
-            fetchInventoryItems()
+            viewModel.fetchInventoryItems()
         }
         .navigationTitle("Inventory")
-    }
-
-    private func fetchInventoryItems() {
-        let db = Firestore.firestore()
-        let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
-
-        inventoryItemsRef.getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error fetching inventory items for \(warehouse): \(error.localizedDescription)")
-                return
-            }
-
-            guard let documents = snapshot?.documents else {
-                print("No items found in \(warehouse).")
-                return
-            }
-
-            do {
-                items = try documents.compactMap { try $0.data(as: InventoryItem.self) }
-            } catch {
-                print("Error decoding inventory items: \(error.localizedDescription)")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    viewModel.addItem()
+                }) {
+                    Image(systemName: "plus")
+                }
             }
         }
     }
-    
-    // View for displaying the sort by section
-    private var sortBySectionView: some View {
+}
+
+struct SortBySectionView: View {
+    @ObservedObject var viewModel: InventoryListViewModel
+
+    var body: some View {
         Section {
             DisclosureGroup("Sort by") {
-                Picker("Sort by", selection: $vm.selectedSortType) {
+                Picker("Sort by", selection: $viewModel.selectedSortType) {
                     ForEach(SortType.allCases, id: \.rawValue) { sortType in
                         Text(sortType.text).tag(sortType)
                     }
-                }.pickerStyle(.segmented)
+                }
+                .pickerStyle(.segmented)
                 
-                Toggle("Is Descending", isOn: $vm.isDescending)
+                Toggle("Is Descending", isOn: $viewModel.isDescending)
             }
         }
     }
-    
-    // View for displaying the list of inventory items
-    private var listItemsSectionView: some View {
+}
+
+struct ListItemsSectionView: View {
+    @ObservedObject var viewModel: InventoryListViewModel
+
+    var body: some View {
         Section {
-            ForEach(items) { item in
+            ForEach(viewModel.items) { item in
                 VStack {
-                    TextField("Name", text: Binding<String>(
-                        get: { item.name },
-                        set: { vm.editedName = $0 }),
-                              onEditingChanged: { vm.onEditingItemNameChanged(item: item, isEditing: $0)}
-                    )
-                    .disableAutocorrection(true)
-                    .font(.headline)
+                    TextField("Name", text: $viewModel.editedName)
+                        .disableAutocorrection(true)
+                        .font(.headline)
+                        .onAppear {
+                            viewModel.editedName = item.name
+                        }
+                        .onDisappear {
+                            viewModel.onEditingItemNameChanged(item: item)
+                        }
                     
-                    Stepper("Quantity: \(item.quantity)",
-                            value: Binding<Int>(
-                                get: { item.quantity },
-                                set: { vm.updateItem(item, data: ["quantity": $0]) }),
-                            in: 0...1000)
+                    Stepper("Quantity: \(item.quantity)", value: $viewModel.editedQuantity, in: 0...1000) { isEditing in
+                        viewModel.onEditingQuantityChanged(item: item, isEditing: isEditing)
+                    }
                 }
             }
-            .onDelete { vm.onDelete(items: items, indexset: $0) }
+            .onDelete { indexSet in
+                viewModel.onDelete(indexSet: indexSet)
+            }
         }
     }
 }

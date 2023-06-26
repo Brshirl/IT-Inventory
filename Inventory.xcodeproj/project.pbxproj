@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */; };
 		8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778042A434FC0005381E0 /* InventoryApp.swift */; };
 		8C8778072A434FC0005381E0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778062A434FC0005381E0 /* ContentView.swift */; };
 		8C8778092A434FC0005381E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C8778082A434FC0005381E0 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarehouseListViewModel.swift; sourceTree = "<group>"; };
 		8C8778012A434FC0005381E0 /* Inventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Inventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C8778042A434FC0005381E0 /* InventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryApp.swift; sourceTree = "<group>"; };
 		8C8778062A434FC0005381E0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				8C8778202A4352CA005381E0 /* Sort.swift */,
 				8C8778082A434FC0005381E0 /* Assets.xcassets */,
 				8C87780A2A434FC0005381E0 /* Preview Content */,
+				8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 			files = (
 				8C8778072A434FC0005381E0 /* ContentView.swift in Sources */,
 				8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */,
+				8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */,
 				8C8778212A4352CA005381E0 /* Sort.swift in Sources */,
 				8CAC787D2A44C867002BEAED /* LocationItem.swift in Sources */,
 				8C8778232A4352E9005381E0 /* InventoryItem.swift in Sources */,
