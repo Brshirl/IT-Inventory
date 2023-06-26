@@ -1,99 +1,117 @@
-//  ContentView.swift
-//  Inventory
-//
-//  Created by Brett Shirley on 6/21/23.
-//
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+import SwiftUI
 
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
 
 struct ContentView: View {
-    
-    // Firestore query for fetching inventory items
-    @FirestoreQuery(collectionPath: "inventories",
-                    predicates: [.order(by: SortType.createdAt.rawValue, descending: true)])
-    private var items: [InventoryItem]
-    
-    // View model for managing inventory list
-    @StateObject private var vm = InventoryListViewModel()
-    
+    @StateObject private var viewModel = WarehouseListViewModel()
+
     var body: some View {
         VStack {
-            // Display error message if there's an error fetching items
-            if let error = $items.error {
-                Text(error.localizedDescription)
+            if viewModel.warehouses.isEmpty {
+                Text("No warehouses found.")
+            } else {
+                List(viewModel.warehouses, id: \.self) { warehouse in
+                    NavigationLink(destination: InventoryItemsView(warehouse: warehouse)) {
+                        Text(warehouse)
+                    }
+                }
             }
-            
-            // Display the list of items if there are items available
-            if items.count > 0 {
+        }
+        .onAppear {
+            viewModel.fetchWarehouses()
+        }
+        .navigationTitle("Locations")
+    }
+}
+
+struct InventoryItemsView: View {
+    @StateObject private var viewModel: InventoryListViewModel
+
+    let warehouse: String
+
+    init(warehouse: String) {
+        self.warehouse = warehouse
+        _viewModel = StateObject(wrappedValue: InventoryListViewModel(warehouse: warehouse))
+    }
+
+    var body: some View {
+        VStack {
+            if viewModel.items.isEmpty {
+                Text("No items found in \(warehouse).")
+            } else {
                 List {
-                    sortBySectionView
-                    listItemsSectionView
+                    SortBySectionView(viewModel: viewModel)
+                    ListItemsSectionView(viewModel: viewModel)
                 }
                 .listStyle(.insetGrouped)
             }
         }
-        .toolbar {
-            // Add button for adding new items to the inventory
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("+") { vm.addItem() }.font(.title)
-            }
-            
-            // Edit button for editing items in the inventory
-            ToolbarItem(placement: .navigationBarLeading) { EditButton() }
+        .onAppear {
+            viewModel.fetchInventoryItems()
         }
-        .onChange(of: vm.selectedSortType) { _ in onSortTypeChanged() }
-        .onChange(of: vm.isDescending) { _ in onSortTypeChanged() }
         .navigationTitle("Inventory")
-    }
-    
-    // View for displaying the list of inventory items
-    private var listItemsSectionView: some View {
-        Section {
-            ForEach(items) { item in
-                VStack {
-                    // Text field for editing the name of the item
-                    TextField("Name", text: Binding<String>(
-                        get: { item.name },
-                        set: { vm.editedName = $0 }),
-                              onEditingChanged: { vm.onEditingItemNameChanged(item: item, isEditing: $0)}
-                    )
-                    .disableAutocorrection(true)
-                    .font(.headline)
-                    
-                    // Stepper for adjusting the quantity of the item
-                    Stepper("Quantity: \(item.quantity)",
-                            value: Binding<Int>(
-                                get: { item.quantity },
-                                set: { vm.updateItem(item, data: ["quantity": $0]) }),
-                            in: 0...1000)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    viewModel.addItem()
+                }) {
+                    Image(systemName: "plus")
                 }
             }
-            .onDelete { vm.onDelete(items: items, indexset: $0) }
         }
     }
-    
-    // View for displaying the sort by section
-    private var sortBySectionView: some View {
+}
+
+struct SortBySectionView: View {
+    @ObservedObject var viewModel: InventoryListViewModel
+
+    var body: some View {
         Section {
             DisclosureGroup("Sort by") {
-                Picker("Sort by", selection: $vm.selectedSortType) {
+                Picker("Sort by", selection: $viewModel.selectedSortType) {
                     ForEach(SortType.allCases, id: \.rawValue) { sortType in
                         Text(sortType.text).tag(sortType)
                     }
-                }.pickerStyle(.segmented)
+                }
+                .pickerStyle(.segmented)
                 
-                Toggle("Is Descending", isOn: $vm.isDescending)
+                Toggle("Is Descending", isOn: $viewModel.isDescending)
             }
         }
     }
-    
-    // Method called when the sort type or sort order changes
-    private func onSortTypeChanged() {
-        $items.predicates = vm.predicates
+}
+
+struct ListItemsSectionView: View {
+    @ObservedObject var viewModel: InventoryListViewModel
+
+    var body: some View {
+        Section {
+            ForEach(viewModel.items) { item in
+                VStack {
+                    TextField("Name", text: $viewModel.editedName)
+                        .disableAutocorrection(true)
+                        .font(.headline)
+                        .onAppear {
+                            viewModel.editedName = item.name
+                        }
+                        .onDisappear {
+                            viewModel.onEditingItemNameChanged(item: item)
+                        }
+                    
+                    Stepper("Quantity: \(item.quantity)", value: $viewModel.editedQuantity, in: 0...1000) { isEditing in
+                        viewModel.onEditingQuantityChanged(item: item, isEditing: isEditing)
+                    }
+                }
+            }
+            .onDelete { indexSet in
+                viewModel.onDelete(indexSet: indexSet)
+            }
+        }
     }
-      
 }
 
 struct ContentView_Previews: PreviewProvider {

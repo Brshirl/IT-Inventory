@@ -18,4 +18,7 @@ struct InventoryItem: Identifiable, Codable{
     
     var name: String
     var quantity: Int
+    var createdBy: String
 }
+
+
