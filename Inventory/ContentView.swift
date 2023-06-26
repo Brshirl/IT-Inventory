@@ -111,15 +111,17 @@ struct ListItemsSectionView: View {
                         .onDisappear {
                             viewModel.onEditingItemNameChanged(item: item)
                         }
-                    
+                
                     // Stepper for editing the item quantity
                     Stepper("Quantity: \(item.quantity)", value: $viewModel.editedQuantity, in: 0...1000) { isEditing in
                         viewModel.onEditingQuantityChanged(item: item, isEditing: isEditing)
+                        viewModel.fetchInventoryItems()
                     }
                 }
             }
             .onDelete { indexSet in
                 viewModel.onDelete(indexSet: indexSet)
+                viewModel.fetchInventoryItems()
             }
         }
     }

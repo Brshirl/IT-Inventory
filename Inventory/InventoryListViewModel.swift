@@ -69,12 +69,15 @@ class InventoryListViewModel: ObservableObject {
         }
 
         // Updates the item's name in Firestore
-        db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
+        let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
+        itemRef.updateData(updatedData) { error in
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }
         }
+
     }
+
 
     // Handles changes to the quantity of an item
     func onEditingQuantityChanged(item: InventoryItem, isEditing: Bool) {
