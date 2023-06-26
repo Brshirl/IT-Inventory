@@ -93,6 +93,7 @@ struct SortBySectionView: View {
     }
 }
 
+
 // View for displaying the list of inventory items
 struct ListItemsSectionView: View {
     @ObservedObject var viewModel: InventoryListViewModel
@@ -102,21 +103,18 @@ struct ListItemsSectionView: View {
             ForEach(viewModel.items) { item in
                 VStack {
                     // Text field for editing the item name
-                    TextField("Name", text: $viewModel.editedName)
-                        .disableAutocorrection(true)
-                        .font(.headline)
-                        .onAppear {
-                            viewModel.editedName = item.name
-                        }
-                        .onDisappear {
-                            viewModel.onEditingItemNameChanged(item: item)
-                        }
-                
+                    TextField("Name", text: Binding(
+                        get: { item.name },
+                        set: { viewModel.onEditingItemNameChanged(item: item, newName: $0) }
+                    ))
+                    .disableAutocorrection(true)
+                    .font(.headline)
+                    
                     // Stepper for editing the item quantity
-                    Stepper("Quantity: \(item.quantity)", value: $viewModel.editedQuantity, in: 0...1000) { isEditing in
-                        viewModel.onEditingQuantityChanged(item: item, isEditing: isEditing)
-                        viewModel.fetchInventoryItems()
-                    }
+                    Stepper("Quantity: \(item.quantity)", value: Binding(
+                        get: { item.quantity },
+                        set: { viewModel.onEditingQuantityChanged(item: item, newQuantity: $0) }
+                    ), in: 0...1000)
                 }
             }
             .onDelete { indexSet in

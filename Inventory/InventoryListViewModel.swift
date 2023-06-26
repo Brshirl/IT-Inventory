@@ -57,13 +57,20 @@ class InventoryListViewModel: ObservableObject {
         }
     }
 
+
     // Updates the name of an item
-    func onEditingItemNameChanged(item: InventoryItem) {
-        guard item.name != editedName else {
+    func onEditingItemNameChanged(item: InventoryItem, newName: String) {
+        guard item.name != newName else {
+            return
+        }
+        
+        guard let itemIndex = items.firstIndex(of: item) else {
             return
         }
 
-        let updatedData = ["name": editedName]
+        items[itemIndex].name = newName
+        
+        let updatedData = ["name": newName]
         guard let itemId = item.id else {
             return
         }
@@ -75,28 +82,32 @@ class InventoryListViewModel: ObservableObject {
                 print("Error updating item: \(error.localizedDescription)")
             }
         }
-
     }
 
 
     // Handles changes to the quantity of an item
-    func onEditingQuantityChanged(item: InventoryItem, isEditing: Bool) {
-        guard isEditing else {
-            let updatedData = ["quantity": editedQuantity]
-            guard let itemId = item.id else {
-                return
-            }
+    func onEditingQuantityChanged(item: InventoryItem, newQuantity: Int) {
+        guard item.quantity != newQuantity else {
+            return
+        }
+        
+        guard let itemIndex = items.firstIndex(of: item) else {
+            return
+        }
+        
+        items[itemIndex].quantity = newQuantity
 
-            // Updates the item's quantity in Firestore
-            db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
-                if let error = error {
-                    print("Error updating item: \(error.localizedDescription)")
-                }
-            }
+        let updatedData = ["quantity": newQuantity]
+        guard let itemId = item.id else {
             return
         }
 
-        editedQuantity = item.quantity
+        // Updates the item's quantity in Firestore
+        db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
+            if let error = error {
+                print("Error updating item: \(error.localizedDescription)")
+            }
+        }
     }
 
     // Deletes an item from the inventory

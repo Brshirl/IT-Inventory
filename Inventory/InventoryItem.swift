@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestoreSwift
 
 
-struct InventoryItem: Identifiable, Codable{
+struct InventoryItem: Identifiable, Codable, Equatable{
     
     @DocumentID var id: String?
     
@@ -19,6 +19,10 @@ struct InventoryItem: Identifiable, Codable{
     var name: String
     var quantity: Int
     var createdBy: String
+    static func == (lhs: InventoryItem, rhs: InventoryItem) -> Bool {
+        // Compare the properties that make two inventory items equal
+        return lhs.id == rhs.id
+    }
 }
 
 
