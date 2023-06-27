@@ -48,7 +48,7 @@ struct InventoryItemsView: View {
                 Text("No items found in \(warehouse).")
             } else {
                 List {
-                    SortBySectionView(viewModel: viewModel)
+                  //  SortBySectionView(viewModel: viewModel)
                     ListItemsSectionView(viewModel: viewModel)
                 }
                 .listStyle(.insetGrouped)

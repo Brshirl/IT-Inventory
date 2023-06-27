@@ -19,6 +19,8 @@ struct InventoryItem: Identifiable, Codable, Equatable{
     var name: String
     var quantity: Int
     var createdBy: String
+    //var lastEditedBy: String
+    
     static func == (lhs: InventoryItem, rhs: InventoryItem) -> Bool {
         // Compare the properties that make two inventory items equal
         return lhs.id == rhs.id
