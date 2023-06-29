@@ -6,6 +6,7 @@
 import SwiftUI
 import FirebaseAuth
 
+
 struct LoginView: View {
     @AppStorage("uid") var userID: String = ""
     
@@ -13,6 +14,12 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false // Track login state
     
+    private func isValidEmail(_ email: String) -> Bool {
+        // Validate email using regular expression
+        let emailRegex = NSPredicate(format: "SELF MATCHES %@", "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
+        return emailRegex.evaluate(with: email)
+    }
+
     private func isValidPassword(_ password: String) -> Bool {
         // Minimum 6 characters long
         // At least 1 uppercase character
@@ -20,68 +27,20 @@ struct LoginView: View {
         let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         return passwordRegex.evaluate(with: password)
     }
-    
+
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
-                HStack {
-                    Image(systemName: "mail")
-                    TextField("Email", text: $email)
-                    
-                    Spacer()
-                    
-                    if email.count != 0 {
-                        Image(systemName: email.isValidEmail() ? "checkmark" : "xmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(email.isValidEmail() ? .green : .red)
-                    }
+                TextFieldWithValidation(systemName: "mail", placeholder: "Email", text: $email, isValid: isValidEmail)
+                SecureFieldWithValidation(systemName: "lock", placeholder: "Password", text: $password, isValid: isValidPassword)
+                
+                Button("Sign In") {
+                    signIn()
                 }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(lineWidth: 2)
-                        .foregroundColor(.black)
-                )
+                .buttonStyle(FilledButtonStyle())
                 .padding()
                 
-                HStack {
-                    Image(systemName: "lock")
-                    SecureField("Password", text: $password)
-                    
-                    Spacer()
-                    
-                    if password.count != 0 {
-                        Image(systemName: isValidPassword(password) ? "checkmark" : "xmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(isValidPassword(password) ? .green : .red)
-                    }
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(lineWidth: 2)
-                        .foregroundColor(.black)
-                )
-                .padding()
-                
-                Button {
-                    signIn() // Call the signIn() function
-                } label: {
-                    Text("Sign In")
-                        .foregroundColor(.white)
-                        .font(.title3)
-                        .bold()
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.black)
-                        )
-                        .padding(.horizontal)
-                }
-                
-                Spacer()
                 Spacer()
             }
             .fullScreenCover(isPresented: $isLoggedIn) {
@@ -89,9 +48,9 @@ struct LoginView: View {
                     ContentView()
                 }
             }
-            .navigationBarHidden(true) // Hide the navigation bar
+            .navigationBarHidden(true)
         }
-        .navigationViewStyle(StackNavigationViewStyle()) // Use stack navigation style
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     // Button action to perform sign-in
@@ -106,9 +65,11 @@ struct LoginView: View {
                 print(authResult.user.uid)
                 withAnimation {
                     userID = authResult.user.uid
-                    isLoggedIn = true // Set isLoggedIn to true to trigger navigation
+                    isLoggedIn = true
                 }
             }
         }
     }
 }
+
+

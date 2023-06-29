@@ -105,7 +105,7 @@ struct ListItemsSectionView: View {
                     // Text field for editing the item name
                     TextField("Name", text: Binding(
                         get: { item.name },
-                        set: { viewModel.onEditingItemNameChanged(item: item, newName: $0) }
+                        set: { viewModel.updateItemName(item: item, newName: $0) }
                     ))
                     .disableAutocorrection(true)
                     .font(.headline)
@@ -113,14 +113,17 @@ struct ListItemsSectionView: View {
                     // Stepper for editing the item quantity
                     Stepper("Quantity: \(item.quantity)", value: Binding(
                         get: { item.quantity },
-                        set: { viewModel.onEditingQuantityChanged(item: item, newQuantity: $0) }
+                        set: { viewModel.updateItemQuantity(item: item, newQuantity: $0) }
                     ), in: 0...1000)
                 }
             }
             .onDelete { indexSet in
-                viewModel.onDelete(indexSet: indexSet)
+                indexSet.forEach { index in
+                    viewModel.deleteItem(at: index)
+                }
                 viewModel.fetchInventoryItems()
             }
+
         }
     }
 }

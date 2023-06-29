@@ -1,7 +1,7 @@
-//  InventoryListViewModel.swift
-//  Inventory
+// InventoryListViewModel.swift
+// Inventory
 //
-//  Created by Brett Shirley on 6/21/23.
+// Created by Brett Shirley on 6/21/23.
 //
 
 import Foundation
@@ -59,7 +59,7 @@ class InventoryListViewModel: ObservableObject {
     }
 
     // Updates the name of an item
-    func onEditingItemNameChanged(item: InventoryItem, newName: String) {
+    func updateItemName(item: InventoryItem, newName: String) {
         guard item.name != newName else {
             return
         }
@@ -78,7 +78,7 @@ class InventoryListViewModel: ObservableObject {
     }
 
     // Handles changes to the quantity of an item
-    func onEditingQuantityChanged(item: InventoryItem, newQuantity: Int) {
+    func updateItemQuantity(item: InventoryItem, newQuantity: Int) {
         guard item.quantity != newQuantity else {
             return
         }
@@ -97,8 +97,8 @@ class InventoryListViewModel: ObservableObject {
     }
 
     // Deletes an item from the inventory
-    func onDelete(indexSet: IndexSet) {
-        guard let index = indexSet.first, items.indices.contains(index) else {
+    func deleteItem(at index: Int) {
+        guard items.indices.contains(index) else {
             return
         }
 
