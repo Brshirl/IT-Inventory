@@ -26,11 +26,4 @@ struct InventoryItem: Identifiable, Codable, Equatable{
         return lhs.id == rhs.id
     }
     
-//    enum CodingKeys: String, CodingKey {
-//        case id
-//        case name
-//        case quantity
-//        case createdBy
-//        case editeddBy // Add the new key to the coding keys
-//    }
 }
