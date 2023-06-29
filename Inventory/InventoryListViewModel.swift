@@ -8,6 +8,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
+import Combine
 
 class InventoryListViewModel: ObservableObject {
     private let warehouse: String
@@ -15,8 +16,6 @@ class InventoryListViewModel: ObservableObject {
 
     @Published var selectedSortType = SortType.createdAt
     @Published var isDescending = true
-    @Published var editedName = ""
-    @Published var editedQuantity = 0
     @Published var items: [InventoryItem] = []
 
     init(warehouse: String) {
@@ -27,7 +26,7 @@ class InventoryListViewModel: ObservableObject {
     func fetchInventoryItems() {
         let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
 
-        inventoryItemsRef.getDocuments { [weak self] snapshot, error in
+        inventoryItemsRef.addSnapshotListener { [weak self] snapshot, error in
             guard let self = self, let snapshot = snapshot else {
                 return
             }
@@ -57,53 +56,38 @@ class InventoryListViewModel: ObservableObject {
         }
     }
 
-
     // Updates the name of an item
     func onEditingItemNameChanged(item: InventoryItem, newName: String) {
         guard item.name != newName else {
             return
         }
-        
-        guard let itemIndex = items.firstIndex(of: item) else {
-            return
-        }
 
-        items[itemIndex].name = newName
-        
-        let updatedData = ["name": newName]
         guard let itemId = item.id else {
             return
         }
 
         // Updates the item's name in Firestore
         let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
-        itemRef.updateData(updatedData) { error in
+        itemRef.updateData(["name": newName]) { error in
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }
         }
     }
 
-
     // Handles changes to the quantity of an item
     func onEditingQuantityChanged(item: InventoryItem, newQuantity: Int) {
         guard item.quantity != newQuantity else {
             return
         }
-        
-        guard let itemIndex = items.firstIndex(of: item) else {
-            return
-        }
-        
-        items[itemIndex].quantity = newQuantity
 
-        let updatedData = ["quantity": newQuantity]
         guard let itemId = item.id else {
             return
         }
 
         // Updates the item's quantity in Firestore
-        db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
+        let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
+        itemRef.updateData(["quantity": newQuantity]) { error in
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }
@@ -122,7 +106,8 @@ class InventoryListViewModel: ObservableObject {
         }
 
         // Deletes the item from Firestore
-        db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).delete() { error in
+        let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
+        itemRef.delete { error in
             if let error = error {
                 print("Error deleting item: \(error.localizedDescription)")
             }

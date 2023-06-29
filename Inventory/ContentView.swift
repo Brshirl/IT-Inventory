@@ -10,7 +10,7 @@ import SwiftUI
 // View for displaying the list of warehouses
 struct ContentView: View {
     @StateObject private var viewModel = WarehouseListViewModel()
-
+    @AppStorage("uid") var userID: String = ""
     var body: some View {
         VStack {
             if viewModel.warehouses.isEmpty {

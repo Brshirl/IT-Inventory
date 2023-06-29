@@ -42,10 +42,7 @@ struct inventorytrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            // Wrap ContentView in a NavigationView
-            NavigationView {
-                ContentView()
-            }
+            LoginView()
         }
     }
 }
