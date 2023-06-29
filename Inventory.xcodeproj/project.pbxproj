@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C3A08B02A4DBB00002EEDC6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3A08AF2A4DBB00002EEDC6 /* LoginView.swift */; };
+		8C3A08B62A4DBE58002EEDC6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3A08B52A4DBE58002EEDC6 /* String.swift */; };
 		8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */; };
 		8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778042A434FC0005381E0 /* InventoryApp.swift */; };
 		8C8778072A434FC0005381E0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778062A434FC0005381E0 /* ContentView.swift */; };
@@ -21,11 +23,22 @@
 		8C8778232A4352E9005381E0 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778222A4352E9005381E0 /* InventoryItem.swift */; };
 		8C8778252A43530E005381E0 /* InventoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778242A43530E005381E0 /* InventoryListViewModel.swift */; };
 		8C8778292A4353EB005381E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C8778282A4353EB005381E0 /* GoogleService-Info.plist */; };
-		8CAC787D2A44C867002BEAED /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC787C2A44C867002BEAED /* LocationItem.swift */; };
-		8CAC787F2A44C8AC002BEAED /* LocationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */; };
+		8C9F2CB72A49ED8400B5A337 /* InventoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9F2CB62A49ED8400B5A337 /* InventoryTests.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8C9F2CB82A49ED8400B5A337 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C8777F92A434FC0005381E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C8778002A434FC0005381E0;
+			remoteInfo = Inventory;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		8C3A08AF2A4DBB00002EEDC6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		8C3A08B52A4DBE58002EEDC6 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarehouseListViewModel.swift; sourceTree = "<group>"; };
 		8C8778012A434FC0005381E0 /* Inventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Inventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C8778042A434FC0005381E0 /* InventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryApp.swift; sourceTree = "<group>"; };
@@ -37,8 +50,8 @@
 		8C8778222A4352E9005381E0 /* InventoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItem.swift; sourceTree = "<group>"; };
 		8C8778242A43530E005381E0 /* InventoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryListViewModel.swift; sourceTree = "<group>"; };
 		8C8778282A4353EB005381E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8CAC787C2A44C867002BEAED /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
-		8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListViewModel.swift; sourceTree = "<group>"; };
+		8C9F2CB42A49ED8400B5A337 /* InventoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InventoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C9F2CB62A49ED8400B5A337 /* InventoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,13 +67,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8C9F2CB12A49ED8400B5A337 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C3A08AC2A4DBAC5002EEDC6 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				8C3A08AF2A4DBB00002EEDC6 /* LoginView.swift */,
+				8C3A08B52A4DBE58002EEDC6 /* String.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		8C8777F82A434FC0005381E0 = {
 			isa = PBXGroup;
 			children = (
+				8C3A08AC2A4DBAC5002EEDC6 /* Auth */,
 				8C8778032A434FC0005381E0 /* Inventory */,
+				8C9F2CB52A49ED8400B5A337 /* InventoryTests */,
 				8C8778022A434FC0005381E0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				8C8778012A434FC0005381E0 /* Inventory.app */,
+				8C9F2CB42A49ED8400B5A337 /* InventoryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,13 +113,11 @@
 				8C8778042A434FC0005381E0 /* InventoryApp.swift */,
 				8C8778062A434FC0005381E0 /* ContentView.swift */,
 				8C8778242A43530E005381E0 /* InventoryListViewModel.swift */,
+				8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */,
 				8C8778222A4352E9005381E0 /* InventoryItem.swift */,
-				8CAC787C2A44C867002BEAED /* LocationItem.swift */,
-				8CAC787E2A44C8AC002BEAED /* LocationListViewModel.swift */,
 				8C8778202A4352CA005381E0 /* Sort.swift */,
 				8C8778082A434FC0005381E0 /* Assets.xcassets */,
 				8C87780A2A434FC0005381E0 /* Preview Content */,
-				8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -98,6 +128,14 @@
 				8C87780B2A434FC0005381E0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8C9F2CB52A49ED8400B5A337 /* InventoryTests */ = {
+			isa = PBXGroup;
+			children = (
+				8C9F2CB62A49ED8400B5A337 /* InventoryTests.swift */,
+			);
+			path = InventoryTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +165,24 @@
 			productReference = 8C8778012A434FC0005381E0 /* Inventory.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8C9F2CB32A49ED8400B5A337 /* InventoryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C9F2CBA2A49ED8400B5A337 /* Build configuration list for PBXNativeTarget "InventoryTests" */;
+			buildPhases = (
+				8C9F2CB02A49ED8400B5A337 /* Sources */,
+				8C9F2CB12A49ED8400B5A337 /* Frameworks */,
+				8C9F2CB22A49ED8400B5A337 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C9F2CB92A49ED8400B5A337 /* PBXTargetDependency */,
+			);
+			name = InventoryTests;
+			productName = InventoryTests;
+			productReference = 8C9F2CB42A49ED8400B5A337 /* InventoryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -139,6 +195,10 @@
 				TargetAttributes = {
 					8C8778002A434FC0005381E0 = {
 						CreatedOnToolsVersion = 14.3.1;
+					};
+					8C9F2CB32A49ED8400B5A337 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 8C8778002A434FC0005381E0;
 					};
 				};
 			};
@@ -159,6 +219,7 @@
 			projectRoot = "";
 			targets = (
 				8C8778002A434FC0005381E0 /* Inventory */,
+				8C9F2CB32A49ED8400B5A337 /* InventoryTests */,
 			);
 		};
 /* End PBXProject section */
@@ -174,6 +235,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8C9F2CB22A49ED8400B5A337 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -182,17 +250,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C8778072A434FC0005381E0 /* ContentView.swift in Sources */,
+				8C3A08B02A4DBB00002EEDC6 /* LoginView.swift in Sources */,
+				8C3A08B62A4DBE58002EEDC6 /* String.swift in Sources */,
 				8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */,
 				8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */,
 				8C8778212A4352CA005381E0 /* Sort.swift in Sources */,
-				8CAC787D2A44C867002BEAED /* LocationItem.swift in Sources */,
 				8C8778232A4352E9005381E0 /* InventoryItem.swift in Sources */,
-				8CAC787F2A44C8AC002BEAED /* LocationListViewModel.swift in Sources */,
 				8C8778252A43530E005381E0 /* InventoryListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8C9F2CB02A49ED8400B5A337 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C9F2CB72A49ED8400B5A337 /* InventoryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8C9F2CB92A49ED8400B5A337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C8778002A434FC0005381E0 /* Inventory */;
+			targetProxy = 8C9F2CB82A49ED8400B5A337 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8C87780D2A434FC0005381E0 /* Debug */ = {
@@ -369,6 +453,50 @@
 			};
 			name = Release;
 		};
+		8C9F2CBB2A49ED8400B5A337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YJZS7QT99A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Geco.InventoryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Inventory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Inventory";
+			};
+			name = Debug;
+		};
+		8C9F2CBC2A49ED8400B5A337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YJZS7QT99A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Geco.InventoryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Inventory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Inventory";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -386,6 +514,15 @@
 			buildConfigurations = (
 				8C8778102A434FC0005381E0 /* Debug */,
 				8C8778112A434FC0005381E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C9F2CBA2A49ED8400B5A337 /* Build configuration list for PBXNativeTarget "InventoryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C9F2CBB2A49ED8400B5A337 /* Debug */,
+				8C9F2CBC2A49ED8400B5A337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

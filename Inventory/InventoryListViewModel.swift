@@ -1,4 +1,3 @@
-
 //  InventoryListViewModel.swift
 //  Inventory
 //
@@ -9,101 +8,111 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
+import Combine
 
 class InventoryListViewModel: ObservableObject {
+    @AppStorage("uid") var userID: String = ""
+
     private let warehouse: String
-       private let db = Firestore.firestore()
+    private let db = Firestore.firestore()
 
-       @Published var selectedSortType = SortType.createdAt
-       @Published var isDescending = true
-       @Published var editedName = ""
-       @Published var editedQuantity = 0
-       @Published var items: [InventoryItem] = []
+    @Published var selectedSortType = SortType.createdAt
+    @Published var isDescending = true
+    @Published var items: [InventoryItem] = []
 
-       init(warehouse: String) {
-           self.warehouse = warehouse
-       }
+    init(warehouse: String) {
+        self.warehouse = warehouse
+    }
 
-       func fetchInventoryItems() {
-           let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
+    // Fetches the inventory items for the selected warehouse
+    func fetchInventoryItems() {
+        let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
 
-           inventoryItemsRef.getDocuments { [weak self] snapshot, error in
-               guard let self = self, let snapshot = snapshot else {
-                   return
-               }
+        inventoryItemsRef.addSnapshotListener { [weak self] snapshot, error in
+            guard let self = self, let snapshot = snapshot else {
+                return
+            }
 
-               if let error = error {
-                   print("Error fetching inventory items for \(self.warehouse): \(error.localizedDescription)")
-                   return
-               }
+            if let error = error {
+                print("Error fetching inventory items for \(self.warehouse): \(error.localizedDescription)")
+                return
+            }
 
-               do {
-                   self.items = try snapshot.documents.compactMap { try $0.data(as: InventoryItem.self) }
-               } catch {
-                   print("Error decoding inventory items: \(error.localizedDescription)")
-               }
-           }
-       }
+            do {
+                // Decodes the retrieved documents into InventoryItem objects
+                self.items = try snapshot.documents.compactMap { try $0.data(as: InventoryItem.self) }
+            } catch {
+                print("Error decoding inventory items: \(error.localizedDescription)")
+            }
+        }
+    }
 
-       func addItem() {
-           let newItem = InventoryItem(name: "New Item", quantity: 1, createdBy: "Name")
-           do {
-               let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
-               try inventoryItemsRef.addDocument(from: newItem)
-           } catch {
-               print("Error adding item: \(error.localizedDescription)")
-           }
-       }
+    // Adds a new item to the inventory
+    func addItem() {
+        let newItem = InventoryItem(name: "New Item", quantity: 1, createdBy: userID, lastEditedBy: userID)
+        do {
+            let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
+            try inventoryItemsRef.addDocument(from: newItem)
+        } catch {
+            print("Error adding item: \(error.localizedDescription)")
+        }
+    }
 
-       func onEditingItemNameChanged(item: InventoryItem) {
-           guard item.name != editedName else {
-               return
-           }
+    // Updates the name of an item
+    func onEditingItemNameChanged(item: InventoryItem, newName: String) {
+        guard item.name != newName else {
+            return
+        }
 
-           let updatedData = ["name": editedName]
-           guard let itemId = item.id else {
-               return
-           }
+        guard let itemId = item.id else {
+            return
+        }
 
-           db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
-               if let error = error {
-                   print("Error updating item: \(error.localizedDescription)")
-               }
-           }
-       }
+        // Updates the item's name and lastEditedBy field in Firestore
+        let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
+        itemRef.updateData(["name": newName, "lastEditedBy": userID]) { error in // Set lastEditedBy to the user's UID
+            if let error = error {
+                print("Error updating item: \(error.localizedDescription)")
+            }
+        }
+    }
 
-       func onEditingQuantityChanged(item: InventoryItem, isEditing: Bool) {
-           guard isEditing else {
-               let updatedData = ["quantity": editedQuantity]
-               guard let itemId = item.id else {
-                   return
-               }
+    // Handles changes to the quantity of an item
+    func onEditingQuantityChanged(item: InventoryItem, newQuantity: Int) {
+        guard item.quantity != newQuantity else {
+            return
+        }
 
-               db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).updateData(updatedData) { error in
-                   if let error = error {
-                       print("Error updating item: \(error.localizedDescription)")
-                   }
-               }
-               return
-           }
+        guard let itemId = item.id else {
+            return
+        }
 
-           editedQuantity = item.quantity
-       }
+        // Updates the item's quantity and lastEditedBy field in Firestore
+        let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
+        itemRef.updateData(["quantity": newQuantity, "lastEditedBy": userID]) { error in // Set lastEditedBy to the user's UID
+            if let error = error {
+                print("Error updating item: \(error.localizedDescription)")
+            }
+        }
+    }
 
-       func onDelete(indexSet: IndexSet) {
-           guard let index = indexSet.first, items.indices.contains(index) else {
-               return
-           }
+    // Deletes an item from the inventory
+    func onDelete(indexSet: IndexSet) {
+        guard let index = indexSet.first, items.indices.contains(index) else {
+            return
+        }
 
-           let item = items[index]
-           guard let itemId = item.id else {
-               return
-           }
+        let item = items[index]
+        guard let itemId = item.id else {
+            return
+        }
 
-           db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId).delete() { error in
-               if let error = error {
-                   print("Error deleting item: \(error.localizedDescription)")
-               }
-           }
-       }
-   }
+        // Deletes the item from Firestore
+        let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
+        itemRef.delete { error in
+            if let error = error {
+                print("Error deleting item: \(error.localizedDescription)")
+            }
+        }
+    }
+}
