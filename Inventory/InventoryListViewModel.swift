@@ -11,6 +11,8 @@ import SwiftUI
 import Combine
 
 class InventoryListViewModel: ObservableObject {
+    @AppStorage("uid") var userID: String = ""
+
     private let warehouse: String
     private let db = Firestore.firestore()
 
@@ -47,7 +49,7 @@ class InventoryListViewModel: ObservableObject {
 
     // Adds a new item to the inventory
     func addItem() {
-        let newItem = InventoryItem(name: "New Item", quantity: 1, createdBy: "Name")
+        let newItem = InventoryItem(name: "New Item", quantity: 1, createdBy: userID, lastEditedBy: userID)
         do {
             let inventoryItemsRef = db.collection("inventories").document(warehouse).collection("inventoryItems")
             try inventoryItemsRef.addDocument(from: newItem)
@@ -66,9 +68,9 @@ class InventoryListViewModel: ObservableObject {
             return
         }
 
-        // Updates the item's name in Firestore
+        // Updates the item's name and lastEditedBy field in Firestore
         let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
-        itemRef.updateData(["name": newName]) { error in
+        itemRef.updateData(["name": newName, "lastEditedBy": userID]) { error in // Set lastEditedBy to the user's UID
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }
@@ -85,9 +87,9 @@ class InventoryListViewModel: ObservableObject {
             return
         }
 
-        // Updates the item's quantity in Firestore
+        // Updates the item's quantity and lastEditedBy field in Firestore
         let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
-        itemRef.updateData(["quantity": newQuantity]) { error in
+        itemRef.updateData(["quantity": newQuantity, "lastEditedBy": userID]) { error in // Set lastEditedBy to the user's UID
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }

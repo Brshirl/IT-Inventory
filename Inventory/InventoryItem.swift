@@ -19,10 +19,18 @@ struct InventoryItem: Identifiable, Codable, Equatable{
     var name: String
     var quantity: Int
     var createdBy: String
-   // var editedBy: String
+    var lastEditedBy: String
     
     static func == (lhs: InventoryItem, rhs: InventoryItem) -> Bool {
         // Compare the properties that make two inventory items equal
         return lhs.id == rhs.id
     }
+    
+//    enum CodingKeys: String, CodingKey {
+//        case id
+//        case name
+//        case quantity
+//        case createdBy
+//        case editeddBy // Add the new key to the coding keys
+//    }
 }
