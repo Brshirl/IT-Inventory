@@ -9,8 +9,8 @@ import FirebaseAuth
 
 struct LoginView: View {
     @AppStorage("uid") var userID: String = ""
-    
-    @State private var email: String = ""
+    @AppStorage("email") var email: String = ""
+  //  @State private var email: String = ""
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false // Track login state
     
@@ -24,6 +24,7 @@ struct LoginView: View {
         // Minimum 6 characters long
         // At least 1 uppercase character
         // At least 1 special character
+        //Password!
         let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         return passwordRegex.evaluate(with: password)
     }
@@ -32,6 +33,9 @@ struct LoginView: View {
         NavigationView {
             VStack {
                 Spacer()
+                Image("GECOLOGO")
+                    .resizable()
+                    .scaledToFit()
                 TextFieldWithValidation(systemName: "mail", placeholder: "Email", text: $email, isValid: isValidEmail)
                 SecureFieldWithValidation(systemName: "lock", placeholder: "Password", text: $password, isValid: isValidPassword)
                 

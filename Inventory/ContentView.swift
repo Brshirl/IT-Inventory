@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = WarehouseListViewModel()
     @AppStorage("uid") var userID: String = ""
+
     var body: some View {
         VStack {
             if viewModel.warehouses.isEmpty {
@@ -48,7 +49,7 @@ struct InventoryItemsView: View {
                 Text("No items found in \(warehouse).")
             } else {
                 List {
-                  //  SortBySectionView(viewModel: viewModel)
+                    SortBySectionView(viewModel: viewModel)
                     ListItemsSectionView(viewModel: viewModel)
                 }
                 .listStyle(.insetGrouped)
@@ -116,6 +117,9 @@ struct ListItemsSectionView: View {
                         set: { viewModel.updateItemQuantity(item: item, newQuantity: $0) }
                     ), in: 0...1000)
                 }
+                Text("Last Edited By: \(item.lastEditedBy)")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
             }
             .onDelete { indexSet in
                 indexSet.forEach { index in
