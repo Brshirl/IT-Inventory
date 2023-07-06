@@ -100,11 +100,16 @@ struct SortBySectionView: View {
     }
 }
 
-
-
 // View for displaying the list of inventory items
 struct ListItemsSectionView: View {
     @ObservedObject var viewModel: InventoryListViewModel
+
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter
+    }
 
     var body: some View {
         Section {
@@ -117,14 +122,14 @@ struct ListItemsSectionView: View {
                     ))
                     .disableAutocorrection(true)
                     .font(.headline)
-                    
+
                     // Stepper for editing the item quantity
                     Stepper("Quantity: \(item.quantity)", value: Binding(
                         get: { item.quantity },
                         set: { viewModel.updateItemQuantity(item: item, newQuantity: $0) }
                     ), in: 0...1000)
                 }
-                Text("Last Edited By: \(item.lastEditedBy)")
+                Text("Last Edited By: \(item.lastEditedBy), Updated At: \(formattedUpdatedAt(item.updatedAt))")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }
@@ -134,8 +139,14 @@ struct ListItemsSectionView: View {
                 }
                 viewModel.fetchInventoryItems()
             }
-
         }
+    }
+
+    func formattedUpdatedAt(_ date: Date?) -> String {
+        guard let date = date else {
+            return "Unknown"
+        }
+        return dateFormatter.string(from: date)
     }
 }
 

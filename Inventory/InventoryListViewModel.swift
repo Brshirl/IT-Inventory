@@ -41,7 +41,8 @@ class InventoryListViewModel: ObservableObject {
             
             do {
                 // Decodes the retrieved documents into InventoryItem objects
-                self.items = try snapshot.documents.compactMap { try $0.data(as: InventoryItem.self) }
+                self.items = try snapshot.documents.compactMap { try $0.data(as: InventoryItem.self)}
+                    self.sortItems()
             } catch {
                 print("Error decoding inventory items: \(error.localizedDescription)")
             }
