@@ -86,13 +86,20 @@ struct SortBySectionView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .onChange(of: viewModel.selectedSortType) { _ in
+                    viewModel.sortItems() // Call sortItems() when the selected sort type changes
+                }
                 
                 // Toggle for selecting the sort order (ascending or descending)
-                Toggle("Is Descending", isOn: $viewModel.isDescending)
+                Toggle("Order", isOn: $viewModel.isDescending)
+                    .onChange(of: viewModel.isDescending) { _ in
+                        viewModel.sortItems() // Call sortItems() when the sort order changes
+                    }
             }
         }
     }
 }
+
 
 
 // View for displaying the list of inventory items
