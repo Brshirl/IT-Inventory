@@ -76,7 +76,7 @@ class InventoryListViewModel: ObservableObject {
         
         // Updates the item's name and lastEditedBy field in Firestore
         let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
-        itemRef.updateData(["name": newName, "lastEditedBy": username]) { error in // Set lastEditedBy to the Username
+        itemRef.updateData(["name": newName, "lastEditedBy": username, "updatedAt": Date()]) { error in // Set lastEditedBy to the Username
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }
@@ -97,7 +97,7 @@ class InventoryListViewModel: ObservableObject {
         
         // Updates the item's quantity and lastEditedBy field in Firestore
         let itemRef = db.collection("inventories").document(warehouse).collection("inventoryItems").document(itemId)
-        itemRef.updateData(["quantity": newQuantity, "lastEditedBy": username]) { error in // Set lastEditedBy to Username
+        itemRef.updateData(["quantity": newQuantity, "lastEditedBy": username, "updatedAt": Date()]) { error in // Set lastEditedBy to Username
             if let error = error {
                 print("Error updating item: \(error.localizedDescription)")
             }
