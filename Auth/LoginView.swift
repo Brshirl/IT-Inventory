@@ -5,12 +5,26 @@
 
 import SwiftUI
 import FirebaseAuth
+import AuthenticationServices
 
+struct SignInWithAppleButtonViewRep: UIViewRepresentable {
+    
+    let type: ASAuthorizationAppleIDButton.ButtonType
+    let style: ASAuthorizationAppleIDButton.Style
+    
+    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+        ASAuthorizationAppleIDButton(authorizationButtonType: type, authorizationButtonStyle: style)
+    }
+    
+    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
+        
+    }
+}
 
 struct LoginView: View {
+    @StateObject var loginData = Apple()
     @AppStorage("uid") var userID: String = ""
     @AppStorage("email") var email: String = ""
-  //  @State private var email: String = ""
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false // Track login state
     
@@ -24,7 +38,7 @@ struct LoginView: View {
         // Minimum 6 characters long
         // At least 1 uppercase character
         // At least 1 special character
-        //Password!
+        // Password!
         let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         return passwordRegex.evaluate(with: password)
     }
@@ -46,6 +60,32 @@ struct LoginView: View {
                 .padding()
                 
                 Spacer()
+                Spacer()
+                SignInWithAppleButton { (request) in
+                    loginData.nonce = randomNonceString()
+                    request.requestedScopes = [.email, .fullName]
+                    request.nonce = sha256(loginData.nonce)
+                } onCompletion: { (result) in
+                    switch result {
+                    case .success(let user):
+                        print("Success")
+                        guard let credential = user.credential as? ASAuthorizationAppleIDCredential else {
+                            print("Error with Firebase")
+                            return
+                        }
+                        loginData.authenticate(credential: credential)
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+                .signInWithAppleButtonStyle(.black)
+                .frame(height: 55)
+                .clipShape(Capsule())
+                .padding(.horizontal, 30)
+                .offset(y: -70)
+
+                // End of code for button placement
             }
             .fullScreenCover(isPresented: $isLoggedIn) {
                 NavigationView {
@@ -75,5 +115,3 @@ struct LoginView: View {
         }
     }
 }
-
-
