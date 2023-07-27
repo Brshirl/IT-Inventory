@@ -9,9 +9,10 @@ import Foundation
 import AuthenticationServices
 import CryptoKit
 import Firebase
+import SwiftUI
 
-class Apple: ObservableObject {
-    
+class Apple: ObservableObject {    
+    @Published var isLoggedIn: Bool = false // Track login state
     @Published var nonce = ""
     
     func authenticate(credential: ASAuthorizationAppleIDCredential) {
@@ -30,8 +31,12 @@ class Apple: ObservableObject {
                 print(error.localizedDescription)
                 return
             }
-            
             print("Logged in Successfully")
+//                .fullScreenCover(isPresented: $isLoggedIn) {
+//                    NavigationView {
+//                        ContentView()
+//                    }
+//                }
         }
     }
 }
