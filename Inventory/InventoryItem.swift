@@ -20,7 +20,7 @@ struct InventoryItem: Identifiable, Codable, Equatable{
     var quantity: Int
     var createdBy: String
     var lastEditedBy: String
-    var category: String
+   // var category: String
     
     static func == (lhs: InventoryItem, rhs: InventoryItem) -> Bool {
         // Compare the properties that make two inventory items equal

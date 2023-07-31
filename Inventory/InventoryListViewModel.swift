@@ -17,6 +17,10 @@ class InventoryListViewModel: ObservableObject {
     private let warehouse: String
     private let db = Firestore.firestore()
     
+    let defaultCategories = [""]
+    @State private var newCategory: String = "" // State variable to store the selected category for a new item
+
+    
     @Published var selectedSortType = SortType.createdAt
     @Published var isDescending = true
     @Published var items: [InventoryItem] = []
