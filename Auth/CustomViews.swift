@@ -52,11 +52,11 @@ struct SecureFieldWithValidation: View {
             
             Spacer()
             
-            if !text.isEmpty {
-                Image(systemName: isValid(text) ? "checkmark" : "xmark")
-                    .fontWeight(.bold)
-                    .foregroundColor(isValid(text) ? .green : .red)
-            }
+//            if !text.isEmpty {
+//                Image(systemName: isValid(text) ? "checkmark" : "xmark")
+//                    .fontWeight(.bold)
+//                    .foregroundColor(isValid(text) ? .green : .red)
+//            }
         }
         .padding()
         .overlay(
@@ -85,3 +85,5 @@ struct FilledButtonStyle: ButtonStyle {
             .padding(.horizontal)
     }
 }
+
+

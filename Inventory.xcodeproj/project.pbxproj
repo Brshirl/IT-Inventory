@@ -24,7 +24,7 @@
 		8C8778232A4352E9005381E0 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778222A4352E9005381E0 /* InventoryItem.swift */; };
 		8C8778252A43530E005381E0 /* InventoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778242A43530E005381E0 /* InventoryListViewModel.swift */; };
 		8C8778292A4353EB005381E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C8778282A4353EB005381E0 /* GoogleService-Info.plist */; };
-		8C9F2CB72A49ED8400B5A337 /* InventoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9F2CB62A49ED8400B5A337 /* InventoryTests.swift */; };
+		8CE0653F2A6830E3004022F9 /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE0653E2A6830E3004022F9 /* Apple.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +53,8 @@
 		8C8778242A43530E005381E0 /* InventoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryListViewModel.swift; sourceTree = "<group>"; };
 		8C8778282A4353EB005381E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C9F2CB42A49ED8400B5A337 /* InventoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InventoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C9F2CB62A49ED8400B5A337 /* InventoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryTests.swift; sourceTree = "<group>"; };
+		8CE0653B2A659FA7004022F9 /* Inventory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Inventory.entitlements; sourceTree = "<group>"; };
+		8CE0653E2A6830E3004022F9 /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +86,7 @@
 				8C3A08AF2A4DBB00002EEDC6 /* LoginView.swift */,
 				8C3A08B52A4DBE58002EEDC6 /* String.swift */,
 				8C1D1C8B2A4E1B9900F5E835 /* CustomViews.swift */,
+				8CE0653E2A6830E3004022F9 /* Apple.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -111,6 +113,7 @@
 		8C8778032A434FC0005381E0 /* Inventory */ = {
 			isa = PBXGroup;
 			children = (
+				8CE0653B2A659FA7004022F9 /* Inventory.entitlements */,
 				8C87781F2A43513D005381E0 /* Info.plist */,
 				8C8778282A4353EB005381E0 /* GoogleService-Info.plist */,
 				8C8778042A434FC0005381E0 /* InventoryApp.swift */,
@@ -136,7 +139,6 @@
 		8C9F2CB52A49ED8400B5A337 /* InventoryTests */ = {
 			isa = PBXGroup;
 			children = (
-				8C9F2CB62A49ED8400B5A337 /* InventoryTests.swift */,
 			);
 			path = InventoryTests;
 			sourceTree = "<group>";
@@ -256,6 +258,7 @@
 				8C8778072A434FC0005381E0 /* ContentView.swift in Sources */,
 				8C3A08B02A4DBB00002EEDC6 /* LoginView.swift in Sources */,
 				8C3A08B62A4DBE58002EEDC6 /* String.swift in Sources */,
+				8CE0653F2A6830E3004022F9 /* Apple.swift in Sources */,
 				8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */,
 				8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */,
 				8C8778212A4352CA005381E0 /* Sort.swift in Sources */,
@@ -268,7 +271,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C9F2CB72A49ED8400B5A337 /* InventoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +404,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Inventory/Inventory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Inventory/Preview Content\"";
@@ -409,6 +412,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Inventory/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "GECO IT Inventory";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +437,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Inventory/Inventory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Inventory/Preview Content\"";
@@ -439,6 +445,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Inventory/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "GECO IT Inventory";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

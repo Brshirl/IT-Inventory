@@ -7,10 +7,12 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
 
+
 // View for displaying the list of warehouses
 struct ContentView: View {
     @StateObject private var viewModel = WarehouseListViewModel()
     @AppStorage("uid") var userID: String = ""
+
     var body: some View {
         VStack {
             if viewModel.warehouses.isEmpty {
@@ -42,13 +44,27 @@ struct InventoryItemsView: View {
         _viewModel = StateObject(wrappedValue: InventoryListViewModel(warehouse: warehouse))
     }
 
+    @State private var searchQuery = ""
+
     var body: some View {
         VStack {
-            if viewModel.items.isEmpty {
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .foregroundColor(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
+                    .frame(height: 32) // Adjust the height of the search bar
+
+                TextField("Search items", text: $viewModel.searchQuery)
+                    .padding(.horizontal)
+                    .foregroundColor(.primary)
+            }
+            .padding(.horizontal)
+
+            if viewModel.filteredItems.isEmpty {
                 Text("No items found in \(warehouse).")
             } else {
                 List {
-                  //  SortBySectionView(viewModel: viewModel)
+                    SortBySectionView(viewModel: viewModel)
                     ListItemsSectionView(viewModel: viewModel)
                 }
                 .listStyle(.insetGrouped)
@@ -57,6 +73,9 @@ struct InventoryItemsView: View {
         .onAppear {
             viewModel.fetchInventoryItems()
         }
+        .onChange(of: searchQuery, perform: { value in
+            viewModel.searchQuery = value // Update the searchQuery in the ViewModel
+        })
         .navigationTitle("Inventory")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -85,22 +104,34 @@ struct SortBySectionView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .onChange(of: viewModel.selectedSortType) { _ in
+                    viewModel.sortItems() // Call sortItems() when the selected sort type changes
+                }
                 
                 // Toggle for selecting the sort order (ascending or descending)
-                Toggle("Is Descending", isOn: $viewModel.isDescending)
+                Toggle("Order", isOn: $viewModel.isDescending)
+                    .onChange(of: viewModel.isDescending) { _ in
+                        viewModel.sortItems() // Call sortItems() when the sort order changes
+                    }
             }
         }
     }
 }
 
-
 // View for displaying the list of inventory items
 struct ListItemsSectionView: View {
     @ObservedObject var viewModel: InventoryListViewModel
 
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter
+    }
+
     var body: some View {
         Section {
-            ForEach(viewModel.items) { item in
+            ForEach(viewModel.filteredItems) { item in
                 VStack {
                     // Text field for editing the item name
                     TextField("Name", text: Binding(
@@ -109,13 +140,16 @@ struct ListItemsSectionView: View {
                     ))
                     .disableAutocorrection(true)
                     .font(.headline)
-                    
+
                     // Stepper for editing the item quantity
                     Stepper("Quantity: \(item.quantity)", value: Binding(
                         get: { item.quantity },
                         set: { viewModel.updateItemQuantity(item: item, newQuantity: $0) }
                     ), in: 0...1000)
                 }
+                Text("Last Edited By: \(item.lastEditedBy), Updated At: \(formattedUpdatedAt(item.updatedAt))")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
             }
             .onDelete { indexSet in
                 indexSet.forEach { index in
@@ -123,8 +157,14 @@ struct ListItemsSectionView: View {
                 }
                 viewModel.fetchInventoryItems()
             }
-
         }
+    }
+
+    func formattedUpdatedAt(_ date: Date?) -> String {
+        guard let date = date else {
+            return "Unknown"
+        }
+        return dateFormatter.string(from: date)
     }
 }
 

@@ -5,12 +5,26 @@
 
 import SwiftUI
 import FirebaseAuth
+import AuthenticationServices
 
+//struct SignInWithAppleButtonViewRep: UIViewRepresentable {
+//
+//    let type: ASAuthorizationAppleIDButton.ButtonType
+//    let style: ASAuthorizationAppleIDButton.Style
+//
+//    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+//        ASAuthorizationAppleIDButton(authorizationButtonType: type, authorizationButtonStyle: style)
+//    }
+//
+//    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
+//
+//    }
+//}
 
 struct LoginView: View {
+    @StateObject var loginData = Apple()
     @AppStorage("uid") var userID: String = ""
-    
-    @State private var email: String = ""
+    @AppStorage("email") var email: String = ""
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false // Track login state
     
@@ -24,14 +38,19 @@ struct LoginView: View {
         // Minimum 6 characters long
         // At least 1 uppercase character
         // At least 1 special character
+        // Password!
         let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         return passwordRegex.evaluate(with: password)
     }
+    
 
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
+                Image("GECOLOGO")
+                    .resizable()
+                    .scaledToFit()
                 TextFieldWithValidation(systemName: "mail", placeholder: "Email", text: $email, isValid: isValidEmail)
                 SecureFieldWithValidation(systemName: "lock", placeholder: "Password", text: $password, isValid: isValidPassword)
                 
@@ -42,6 +61,9 @@ struct LoginView: View {
                 .padding()
                 
                 Spacer()
+                Spacer()
+
+                // End of code for button placement
             }
             .fullScreenCover(isPresented: $isLoggedIn) {
                 NavigationView {
@@ -71,5 +93,3 @@ struct LoginView: View {
         }
     }
 }
-
-
