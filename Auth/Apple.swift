@@ -11,7 +11,7 @@ import CryptoKit
 import Firebase
 import SwiftUI
 
-class Apple: ObservableObject {    
+class Apple: ObservableObject { 
     @Published var isLoggedIn: Bool = false // Track login state
     @Published var nonce = ""
     

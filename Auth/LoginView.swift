@@ -62,29 +62,6 @@ struct LoginView: View {
                 
                 Spacer()
                 Spacer()
-//                SignInWithAppleButton { (request) in
-//                    loginData.nonce = randomNonceString()
-//                    request.requestedScopes = [.email, .fullName]
-//                    request.nonce = sha256(loginData.nonce)
-//                } onCompletion: { (result) in
-//                    switch result {
-//                    case .success(let user):
-//                        print("Success")
-//                        guard let credential = user.credential as? ASAuthorizationAppleIDCredential else {
-//                            print("Error with Firebase")
-//                            return
-//                        }
-//                        loginData.authenticate(credential: credential)
-//
-//                    case .failure(let error):
-//                        print(error.localizedDescription)
-//                    }
-//                }
-//                .signInWithAppleButtonStyle(.black)
-//                .frame(height: 55)
-//                .clipShape(Capsule())
-//                .padding(.horizontal, 30)
-//                .offset(y: -70)
 
                 // End of code for button placement
             }

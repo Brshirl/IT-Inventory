@@ -20,6 +20,7 @@ class InventoryListViewModel: ObservableObject {
     @Published var selectedSortType = SortType.createdAt
     @Published var isDescending = true
     @Published var items: [InventoryItem] = []
+    @Published var searchQuery: String = ""
     
     init(warehouse: String) {
         self.warehouse = warehouse
@@ -156,6 +157,16 @@ class InventoryListViewModel: ObservableObject {
             items.reverse()
         }
     }
+    
+    // Computed property to get the filtered inventory items based on searchQuery
+    var filteredItems: [InventoryItem] {
+        if searchQuery.isEmpty {
+            return items
+        } else {
+            return items.filter { $0.name.localizedCaseInsensitiveContains(searchQuery) }
+        }
+    }
+
 
 
 }
