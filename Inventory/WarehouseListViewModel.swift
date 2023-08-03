@@ -1,4 +1,3 @@
-//
 //  WarehouseListViewModel.swift
 //  Inventory
 //

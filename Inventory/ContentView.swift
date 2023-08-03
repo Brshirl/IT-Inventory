@@ -33,6 +33,7 @@ struct ContentView: View {
     }
 }
 
+
 // View for displaying the inventory items of a specific warehouse
 struct InventoryItemsView: View {
     @StateObject private var viewModel: InventoryListViewModel
@@ -44,21 +45,40 @@ struct InventoryItemsView: View {
         _viewModel = StateObject(wrappedValue: InventoryListViewModel(warehouse: warehouse))
     }
 
-    @State private var searchQuery = ""
+    @State private var isSearchExpanded = false
 
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
+                // Add a background color to the search bar
                 Rectangle()
                     .foregroundColor(Color.gray.opacity(0.2))
                     .cornerRadius(8)
-                    .frame(height: 32) // Adjust the height of the search bar
+                    .frame(height: 32) // Adjust the height of the collapsed search bar
 
-                TextField("Search items", text: $viewModel.searchQuery)
-                    .padding(.horizontal)
-                    .foregroundColor(.primary)
+                HStack {
+                    Image(systemName: "magnifyingglass") // Search icon
+                        .foregroundColor(.gray)
+
+                    if isSearchExpanded {
+                        TextField("Search items", text: $viewModel.searchQuery)
+                            .padding(.horizontal)
+                            .font(.headline) // Increase font size and make it bold
+                            .foregroundColor(.primary)
+                            .transition(.opacity) // Fade in when expanded
+                            .onTapGesture {
+                                // Close the keyboard when tapped outside the TextField
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
+                    }
+                }
             }
             .padding(.horizontal)
+            .onTapGesture {
+                withAnimation {
+                    isSearchExpanded.toggle()
+                }
+            }
 
             if viewModel.filteredItems.isEmpty {
                 Text("No items found in \(warehouse).")
@@ -73,9 +93,6 @@ struct InventoryItemsView: View {
         .onAppear {
             viewModel.fetchInventoryItems()
         }
-        .onChange(of: searchQuery, perform: { value in
-            viewModel.searchQuery = value // Update the searchQuery in the ViewModel
-        })
         .navigationTitle("Inventory")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -86,9 +103,20 @@ struct InventoryItemsView: View {
                     Image(systemName: "plus")
                 }
             }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    withAnimation {
+                        isSearchExpanded.toggle()
+                    }
+                }) {
+                    Image(systemName: "magnifyingglass")
+                }
+            }
         }
     }
 }
+
 
 // View for the sort by section in the inventory items view
 struct SortBySectionView: View {
@@ -140,6 +168,7 @@ struct ListItemsSectionView: View {
                     ))
                     .disableAutocorrection(true)
                     .font(.headline)
+                    
 
                     // Stepper for editing the item quantity
                     Stepper("Quantity: \(item.quantity)", value: Binding(

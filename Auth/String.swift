@@ -1,4 +1,3 @@
-//
 //  String.swift
 //  Inventory
 //

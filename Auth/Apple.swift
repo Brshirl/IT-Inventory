@@ -1,4 +1,3 @@
-//
 //  Apple.swift
 //  Inventory
 //
@@ -11,10 +10,10 @@ import CryptoKit
 import Firebase
 import SwiftUI
 
-class Apple: ObservableObject { 
+class Apple: ObservableObject {
     @Published var isLoggedIn: Bool = false // Track login state
     @Published var nonce = ""
-    
+
     func authenticate(credential: ASAuthorizationAppleIDCredential) {
         guard let token = credential.identityToken else {
             print("Error with Firebase")
@@ -25,21 +24,21 @@ class Apple: ObservableObject {
             return
         }
         let firebaseCredential = OAuthProvider.credential(withProviderID: "apple.com", idToken: tokenString, rawNonce: nonce)
-        
+
         Auth.auth().signIn(with: firebaseCredential) { (result, err) in
             if let error = err {
                 print(error.localizedDescription)
                 return
             }
             print("Logged in Successfully")
-//                .fullScreenCover(isPresented: $isLoggedIn) {
-//                    NavigationView {
-//                        ContentView()
-//                    }
-//                }
+            withAnimation {
+                // Update the isLoggedIn property to trigger the full-screen cover in LoginView
+                self.isLoggedIn = true
+            }
         }
     }
 }
+
 
 func randomNonceString(length: Int = 32) -> String {
     precondition(length > 0)
@@ -69,3 +68,4 @@ func sha256(_ input: String) -> String {
 
     return hashString
 }
+

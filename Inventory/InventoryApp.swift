@@ -21,6 +21,8 @@ struct InventoryApp: App {
         }
     }
     
+
+    
     private func setupFirebase() {
         FirebaseApp.configure()
         
