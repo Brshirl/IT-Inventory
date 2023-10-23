@@ -10,6 +10,9 @@
 		8C1D1C8C2A4E1B9900F5E835 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1D1C8B2A4E1B9900F5E835 /* CustomViews.swift */; };
 		8C3A08B02A4DBB00002EEDC6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3A08AF2A4DBB00002EEDC6 /* LoginView.swift */; };
 		8C3A08B62A4DBE58002EEDC6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3A08B52A4DBE58002EEDC6 /* String.swift */; };
+		8C68FC892AE6BD4D004AFDFE /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C68FC882AE6BD4D004AFDFE /* ScannerView.swift */; };
+		8C68FC8C2AE6C7DE004AFDFE /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C68FC8B2AE6C7DE004AFDFE /* CameraView.swift */; };
+		8C68FC8E2AE6CBF0004AFDFE /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C68FC8D2AE6CBF0004AFDFE /* Permission.swift */; };
 		8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */; };
 		8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778042A434FC0005381E0 /* InventoryApp.swift */; };
 		8C8778072A434FC0005381E0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8778062A434FC0005381E0 /* ContentView.swift */; };
@@ -41,6 +44,9 @@
 		8C1D1C8B2A4E1B9900F5E835 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		8C3A08AF2A4DBB00002EEDC6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8C3A08B52A4DBE58002EEDC6 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		8C68FC882AE6BD4D004AFDFE /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		8C68FC8B2AE6C7DE004AFDFE /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		8C68FC8D2AE6CBF0004AFDFE /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		8C6AA9782A49D71D00A0FE83 /* WarehouseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarehouseListViewModel.swift; sourceTree = "<group>"; };
 		8C8778012A434FC0005381E0 /* Inventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Inventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C8778042A434FC0005381E0 /* InventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryApp.swift; sourceTree = "<group>"; };
@@ -91,9 +97,20 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		8C68FC8A2AE6C7C8004AFDFE /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				8C68FC882AE6BD4D004AFDFE /* ScannerView.swift */,
+				8C68FC8B2AE6C7DE004AFDFE /* CameraView.swift */,
+				8C68FC8D2AE6CBF0004AFDFE /* Permission.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
 		8C8777F82A434FC0005381E0 = {
 			isa = PBXGroup;
 			children = (
+				8C68FC8A2AE6C7C8004AFDFE /* Scanner */,
 				8C3A08AC2A4DBAC5002EEDC6 /* Auth */,
 				8C8778032A434FC0005381E0 /* Inventory */,
 				8C9F2CB52A49ED8400B5A337 /* InventoryTests */,
@@ -254,10 +271,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C68FC892AE6BD4D004AFDFE /* ScannerView.swift in Sources */,
 				8C1D1C8C2A4E1B9900F5E835 /* CustomViews.swift in Sources */,
 				8C8778072A434FC0005381E0 /* ContentView.swift in Sources */,
+				8C68FC8C2AE6C7DE004AFDFE /* CameraView.swift in Sources */,
 				8C3A08B02A4DBB00002EEDC6 /* LoginView.swift in Sources */,
 				8C3A08B62A4DBE58002EEDC6 /* String.swift in Sources */,
+				8C68FC8E2AE6CBF0004AFDFE /* Permission.swift in Sources */,
 				8CE0653F2A6830E3004022F9 /* Apple.swift in Sources */,
 				8C8778052A434FC0005381E0 /* InventoryApp.swift in Sources */,
 				8C6AA9792A49D71D00A0FE83 /* WarehouseListViewModel.swift in Sources */,

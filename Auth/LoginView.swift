@@ -29,6 +29,8 @@ struct LoginView: View {
     @AppStorage("email") var email: String = ""
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false // Track login state
+    @State private var incorrectPasswordError = false
+
 
     private func isValidEmail(_ email: String) -> Bool {
         // Validate email using regular expression
@@ -60,6 +62,13 @@ struct LoginView: View {
                 }
                 .buttonStyle(FilledButtonStyle())
                 .padding()
+                
+                // Show the error message when incorrectPasswordError is true
+                if incorrectPasswordError {
+                    Text("Incorrect password")
+                        .foregroundColor(.red)
+                        .padding(.top, 5)
+                }
 
                 // Add the "Sign in with Apple" button below the login button
                 SignInWithAppleButtonViewRep(type: .signIn, style: .whiteOutline)
@@ -86,6 +95,10 @@ struct LoginView: View {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 print(error)
+                // Check if the error is due to an incorrect password
+                if let authError = error as NSError?, authError.code == AuthErrorCode.wrongPassword.rawValue {
+                    incorrectPasswordError = true
+                }
                 return
             }
 

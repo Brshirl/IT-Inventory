@@ -6,12 +6,14 @@ Brett Shirley
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
+import VisionKit
 
 
 // View for displaying the list of warehouses
 struct ContentView: View {
     @StateObject private var viewModel = WarehouseListViewModel()
     @AppStorage("uid") var userID: String = ""
+
 
     var body: some View {
         VStack {
@@ -38,15 +40,16 @@ struct ContentView: View {
 struct InventoryItemsView: View {
     @StateObject private var viewModel: InventoryListViewModel
 
+    
     let warehouse: String
-
+    
     init(warehouse: String) {
         self.warehouse = warehouse
         _viewModel = StateObject(wrappedValue: InventoryListViewModel(warehouse: warehouse))
     }
-
+    
     @State private var isSearchExpanded = false
-
+    
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
@@ -55,11 +58,10 @@ struct InventoryItemsView: View {
                     .foregroundColor(Color.gray.opacity(0.2))
                     .cornerRadius(8)
                     .frame(height: 32) // Adjust the height of the collapsed search bar
-
+                // SEARCH BOX
                 HStack {
-                    Image(systemName: "magnifyingglass") // Search icon
+                    Image(systemName: "magnifyingglass") // Search icon in the search textb box
                         .foregroundColor(.gray)
-
                     if isSearchExpanded {
                         TextField("Search items", text: $viewModel.searchQuery)
                             .padding(.horizontal)
@@ -71,6 +73,7 @@ struct InventoryItemsView: View {
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
                     }
+                    
                 }
             }
             .padding(.horizontal)
@@ -79,7 +82,7 @@ struct InventoryItemsView: View {
                     isSearchExpanded.toggle()
                 }
             }
-
+            
             if viewModel.filteredItems.isEmpty {
                 Text("No items found in \(warehouse).")
             } else {
@@ -103,7 +106,6 @@ struct InventoryItemsView: View {
                     Image(systemName: "plus")
                 }
             }
-
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     withAnimation {
@@ -111,6 +113,12 @@ struct InventoryItemsView: View {
                     }
                 }) {
                     Image(systemName: "magnifyingglass")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                }) {
+                    Image(systemName: "camera")
                 }
             }
         }
