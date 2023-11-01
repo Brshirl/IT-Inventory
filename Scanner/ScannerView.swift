@@ -33,7 +33,9 @@ struct ScannerView: View{
                     .foregroundColor(Color("Blue"))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
+            .onAppear {
+                checkCameraPermission()
+            }
             Text("Place the QR code inside this area.")
                 .font(.title3)
                 .foregroundColor(.black.opacity(0.8))
@@ -44,7 +46,8 @@ struct ScannerView: View{
                 .foregroundColor(.gray)
             
                 Spacer(minLength: 0)
-            
+       
+
             //Scanner
             GeometryReader{
                 let size = $0.size
@@ -77,7 +80,7 @@ struct ScannerView: View{
             }
             .padding(.horizontal,45)
             Spacer(minLength: 15)
-            
+        
             Button{
                 if session.isRunning && cameraPermission == .approved{
                     reactivateCamera()

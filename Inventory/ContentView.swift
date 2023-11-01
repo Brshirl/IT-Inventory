@@ -13,7 +13,7 @@ import VisionKit
 struct ContentView: View {
     @StateObject private var viewModel = WarehouseListViewModel()
     @AppStorage("uid") var userID: String = ""
-
+    
 
     var body: some View {
         VStack {
@@ -39,7 +39,7 @@ struct ContentView: View {
 // View for displaying the inventory items of a specific warehouse
 struct InventoryItemsView: View {
     @StateObject private var viewModel: InventoryListViewModel
-
+    @State private var isScannerPresented = false
     
     let warehouse: String
     
@@ -117,10 +117,14 @@ struct InventoryItemsView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
+                    isScannerPresented.toggle()
                 }) {
                     Image(systemName: "camera")
                 }
             }
+        }
+        .sheet(isPresented: $isScannerPresented) {
+            ScannerView()
         }
     }
 }
