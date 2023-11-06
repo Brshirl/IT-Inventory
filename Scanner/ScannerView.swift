@@ -30,7 +30,7 @@ struct ScannerView: View{
             } label: {
                 Image(systemName:"xmark")
                     .font(.title3)
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.blue) //.fill(Color("Blue"))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .onAppear {
@@ -47,7 +47,6 @@ struct ScannerView: View{
             
                 Spacer(minLength: 0)
        
-
             //Scanner
             GeometryReader{
                 let size = $0.size
@@ -61,7 +60,7 @@ struct ScannerView: View{
                         RoundedRectangle(cornerRadius: 2,style: .circular)
                         //trimm to get scanner edges
                             .trim(from: 0.61, to: 0.64)
-                            .stroke(Color("Blue"), style: StrokeStyle(lineWidth: 5, lineCap: .round,lineJoin: .round))
+                            .stroke(Color.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round,lineJoin: .round))//.fill(Color("Blue"))
                             .rotationEffect(.init(degrees: rotation))
                         
                     }
@@ -71,7 +70,7 @@ struct ScannerView: View{
                 //animate
                 .overlay(alignment: .top, content: {
                     Rectangle()
-                        .fill(Color("Blue"))
+                        .fill(Color.blue) //.fill(Color("Blue"))
                         .frame(height:2.5)
                         .shadow(color: .black.opacity(0.8), radius: 8, x:0, y:15)
                         .offset(y: isScanning ? size.width:0)
@@ -83,12 +82,13 @@ struct ScannerView: View{
         
             Button{
                 if session.isRunning && cameraPermission == .approved{
+                  //  activateScannerAnimation()
                     reactivateCamera()
                     activateScannerAnimation()
                 }
             }
         label:{
-            Image(systemName: "qrconde.viewfinder")
+            Image(systemName: "qrcode.viewfinder")
                 .font(.largeTitle)
                 .foregroundColor(.gray)
         }

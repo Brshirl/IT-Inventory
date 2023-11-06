@@ -123,7 +123,7 @@ struct InventoryItemsView: View {
                 }
             }
         }
-        .sheet(isPresented: $isScannerPresented) {
+        .fullScreenCover(isPresented: $isScannerPresented) {
             ScannerView()
         }
     }
