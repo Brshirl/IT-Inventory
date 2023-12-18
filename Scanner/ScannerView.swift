@@ -82,7 +82,7 @@ struct ScannerView: View{
         
             Button{
                 if session.isRunning && cameraPermission == .approved{
-                  //  activateScannerAnimation()
+                    activateScannerAnimation() //maybe uncomment to work??
                     reactivateCamera()
                     activateScannerAnimation()
                 }

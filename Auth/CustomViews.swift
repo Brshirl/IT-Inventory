@@ -8,6 +8,9 @@ import Foundation
 import SwiftUI
 
 // Custom text field with validation
+
+
+
 struct TextFieldWithValidation: View {
     let systemName: String
     let placeholder: String
@@ -84,5 +87,4 @@ struct FilledButtonStyle: ButtonStyle {
             .padding(.horizontal)
     }
 }
-
 
